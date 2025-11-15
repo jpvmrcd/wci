@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Tests/wci.App.UnitTests/wci.App.UnitTests.csproj" Id="8651af10-d8c2-4e50-b6a0-be732afaf664" />
+  <Project Path="wci.App/wci.App.csproj" />
+</Solution>

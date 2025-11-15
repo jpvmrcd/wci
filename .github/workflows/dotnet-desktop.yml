@@ -1,0 +1,38 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  test-build-publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore and build application
+        run: dotnet build wci.slnx -c Release
+
+      - name: Execute unit tests
+        run: dotnet test -c Release --no-build
+
+      - name: Publish application
+        run: dotnet publish wci.App/wci.App.csproj --no-build -c Release
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wci.exe
+          path: wci.App/bin/Release/net10.0-windows/win-x64/publish/*.exe

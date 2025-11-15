@@ -1,0 +1,111 @@
+﻿<Page x:Class="wci.App.Views.OverviewPage"
+      x:ClassModifier="internal"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:wci.App.Views"
+      mc:Ignorable="d"
+      d:DesignHeight="450"
+      d:DesignWidth="800"
+      d:DataContext="{d:DesignInstance local:OverviewPage}"
+      Title="OverviewPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   x:Name="TitleTextBlock"
+                   AutomationProperties.Name="Dashboard Page"
+                   AutomationProperties.HeadingLevel="Level1"
+                   KeyboardNavigation.IsTabStop="True"
+                   KeyboardNavigation.TabIndex="0"
+                   Focusable="True"
+                   FontSize="28"
+                   Text="Dashboard" />
+
+        <Border Style="{DynamicResource ColorTilesPanelStyle}"
+                Padding="15"
+                Grid.Row="1"
+                Width="450"
+                Height="190"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="0,15,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"></ColumnDefinition>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Hostname"
+                           Grid.Column="0"
+                           Grid.Row="0" />
+                <TextBlock Text="{Binding ViewModel.Overview.Hostname}"
+                           Grid.Column="1"
+                           Grid.Row="0"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Model"
+                           Grid.Column="0"
+                           Grid.Row="1" />
+                <TextBlock Text="{Binding ViewModel.Overview.Model}"
+                           Grid.Column="1"
+                           Grid.Row="1"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Architecture"
+                           Grid.Column="0"
+                           Grid.Row="2" />
+                <TextBlock Text="{Binding ViewModel.Overview.Architecture}"
+                           Grid.Column="1"
+                           Grid.Row="2"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Platform"
+                           Grid.Column="0"
+                           Grid.Row="3" />
+                <TextBlock Text="{Binding ViewModel.Overview.Platform}"
+                           Grid.Column="1"
+                           Grid.Row="3"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Firmware Version"
+                           Grid.Column="0"
+                           Grid.Row="4" />
+                <TextBlock Text="{Binding ViewModel.Overview.FirmwareVersion}"
+                           Grid.Column="1"
+                           Grid.Row="4"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Kernel Version"
+                           Grid.Column="0"
+                           Grid.Row="5" />
+                <TextBlock Text="{Binding ViewModel.Overview.KernelVersion}"
+                           Grid.Column="1"
+                           Grid.Row="5"
+                           TextWrapping="Wrap" />
+
+                <TextBlock Text="Uptime"
+                           Grid.Column="0"
+                           Grid.Row="6" />
+                <TextBlock Text="{Binding ViewModel.Overview.Uptime}"
+                           Grid.Column="1"
+                           Grid.Row="6"
+                           TextWrapping="Wrap" />
+            </Grid>
+        </Border>
+    </Grid>
+</Page>
