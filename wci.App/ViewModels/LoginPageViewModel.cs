@@ -2,13 +2,14 @@
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel.DataAnnotations;
 using System.Windows.Controls;
+using wci.App.Clients;
 using wci.App.Services;
 using wci.App.Views;
 
 namespace wci.App.ViewModels;
 
 internal sealed partial class LoginPageViewModel(
-    ILuCIService luciService,
+    LuCIClient httpClient,
     INavigationService navigationService) : ObservableValidator
 {
     [ObservableProperty]
@@ -24,23 +25,26 @@ internal sealed partial class LoginPageViewModel(
     [Required(ErrorMessage = "Username is required.")]
     private string _username = "root";
 
+    [ObservableProperty]
+    private bool _isDemo = true;
+
     [RelayCommand]
-    public void Login(PasswordBox passwordBox)
+    public async Task LoginAsync(PasswordBox passwordBox)
     {
         if (HasErrors)
         {
             return;
         }
 
-        var response = luciService.Login(IpAddress, Username, passwordBox.Password);
+        var response = await httpClient.LoginAsync(IpAddress, Username, passwordBox.Password, IsDemo);
 
-        if (string.IsNullOrWhiteSpace(response.Error))
+        if (!string.IsNullOrWhiteSpace(response?.Result))
         {
             navigationService.Navigate(typeof(OverviewPage));
             return;
         }
 
-        ErrorMessage = response.Error;
-        
+        ErrorMessage = response?.Error ?? "Invalid credentials! Please try again.";
+
     }
 }

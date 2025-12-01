@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Windows;
+using wci.App.Clients;
 using wci.App.Services;
 using wci.App.ViewModels;
 using wci.App.Views;
@@ -13,7 +16,6 @@ internal sealed partial class App : Application
         .ConfigureServices((context, services) =>
         {
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddSingleton<ILuCIService, LuCIService>();
 
             services.AddSingleton<MainWindow>();
             services.AddSingleton<MainWindowViewModel>();
@@ -25,6 +27,8 @@ internal sealed partial class App : Application
 
             services.AddTransient<OverviewPage>();
             services.AddTransient<OverviewPageViewModel>();
+            services.AddHttpClient<LuCIClient>();
+
         }).Build();
 
     protected override void OnStartup(StartupEventArgs e)
@@ -40,7 +44,7 @@ internal sealed partial class App : Application
 
     protected override async void OnExit(ExitEventArgs e)
     {
-        _host.Services.GetRequiredService<ILuCIService>()?.Logout();
+        _host.Services.GetRequiredService<LuCIClient>()?.Logout();
         await _host!.StopAsync();
 
         base.OnExit(e);
@@ -54,7 +58,7 @@ internal sealed partial class App : Application
             Console.WriteLine("Runtime terminating: {0}", args.IsTerminating);
         }
 
-        _host.Services.GetRequiredService<ILuCIService>()?.Logout();
+        _host.Services.GetRequiredService<LuCIClient>()?.Logout();
 
         // TODO: Error handling
     }

@@ -1,31 +1,49 @@
-﻿using wci.App.Models;
+﻿using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
+using wci.App.Models;
 
-namespace wci.App.Services;
+namespace wci.App.Clients;
 
-public interface ILuCIService
+internal class LuCIClient(HttpClient client)
 {
-    Login Login(string ip, string username, string password);
-    void Logout();
-    SidenavItem[] GetMenu();
-    Overview GetOverview();
-}
-
-internal sealed class LuCIService : ILuCIService
-{
-    public Login Login(string ip, string username, string password)
+    internal async Task<Login?> LoginAsync(string ip, string username, string password, bool isDemo)
     {
-        // mock error login with 'error' password, else success with mock token response
-        return password == "error"
+        if (isDemo)
+        {
+            return password == "error"
             ? new Login { Error = "Invalid credentials! Please try again." }
-            : new Login { Token = "65e60c5a93b2f2c05e61681bf5e94b49" };
+            : new Login { Result = "65e60c5a93b2f2c05e61681bf5e94b49" };
+        }
+
+        using var jsonContent = GenerateParams("login", username, password);
+
+        var response = await client.PostAsync($"http://{ip}/cgi-bin/luci/rpc/auth", jsonContent);
+
+        return await response.Content.ReadFromJsonAsync<Login>();
     }
 
-    public void Logout()
+    internal Overview GetOverview()
     {
-        // call luci rpc logout
+        return new()
+        {
+            Hostname = "OpenWrt",
+            Model = "GL.iNet GL-MT6000",
+            Architecture = "ARMv8 Processor rev 4",
+            Platform = "mediatek/filogic",
+            FirmwareVersion = "OpenWrt 24.10.4 r28959-29397011cc / LuCI openwrt-24.10 branch 25.292.66247~75e41cb",
+            KernelVersion = "6.6.110",
+            Uptime = "26d 13h 31m 22s"
+        };
     }
 
-    public SidenavItem[] GetMenu()
+    internal void Logout()
+    {
+        // TODO: Find rpc method for this
+    }
+
+    internal SidenavItem[] GetMenu()
     {
         //\xEA0D dsahobaord \xEB91 \xEBD2 \xEC27 \xEC26 \xE946 \xEC4E \xECA5 \xECAA
         // \xEA35 software floppy
@@ -178,17 +196,15 @@ internal sealed class LuCIService : ILuCIService
         ];
     }
 
-    public Overview GetOverview()
+    private static StringContent GenerateParams(string method, params object[] @params)
     {
-        return new()
+        return new StringContent(
+        JsonSerializer.Serialize(new
         {
-            Hostname = "OpenWrt",
-            Model = "GL.iNet GL-MT6000",
-            Architecture = "ARMv8 Processor rev 4",
-            Platform = "mediatek/filogic",
-            FirmwareVersion = "OpenWrt 24.10.4 r28959-29397011cc / LuCI openwrt-24.10 branch 25.292.66247~75e41cb",
-            KernelVersion = "6.6.110",
-            Uptime = "26d 13h 31m 22s"
-        };
+            method,
+            @params
+        }),
+        Encoding.UTF8,
+        "application/json-rpc");
     }
 }

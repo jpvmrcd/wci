@@ -48,8 +48,7 @@
                      Margin="0,0,0,15" />
 
         <CheckBox Content="Demo"
-                  IsEnabled="False"
-                  IsChecked="True"
+                  IsChecked="{Binding ViewModel.IsDemo, Mode=TwoWay}"
                   ToolTipService.InitialShowDelay="200"
                   ToolTipService.Placement="MousePoint"
                   ToolTipService.ToolTip="Use sample data without connecting to OpenWrt."

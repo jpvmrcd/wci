@@ -2,6 +2,6 @@
 
 public sealed record Login
 {
-    public string? Token { get; init; }
+    public string? Result { get; init; }
     public string? Error { get; init; }
 }

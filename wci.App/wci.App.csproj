@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
-		<Version>0.0.1</Version>
+		<Version>0.0.2</Version>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
 		<PublishSingleFile>true</PublishSingleFile>
 		<SelfContained>true</SelfContained>
@@ -23,6 +23,7 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
